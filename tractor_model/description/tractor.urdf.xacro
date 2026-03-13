@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="tractor_model">
+
+    <xacro:include filename="tractor_core.xacro" />
+
+</robot>
