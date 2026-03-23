@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"name": "BTS_arduino",
+			"path": ".."
+		}
+	],
+	"settings": {
+		"ROS2.distro": "humble",
+		"python.autoComplete.extraPaths": [
+			"/home/suraj/autonomy_ws/build/robot_bringup",
+			"/home/suraj/autonomy_ws/install/robot_bringup/lib/python3.10/site-packages",
+			"/opt/ros/humble/lib/python3.10/site-packages",
+			"/opt/ros/humble/local/lib/python3.10/dist-packages"
+		],
+		"python.analysis.extraPaths": [
+			"/home/suraj/autonomy_ws/build/robot_bringup",
+			"/home/suraj/autonomy_ws/install/robot_bringup/lib/python3.10/site-packages",
+			"/opt/ros/humble/lib/python3.10/site-packages",
+			"/opt/ros/humble/local/lib/python3.10/dist-packages"
+		]
+	}
+}
