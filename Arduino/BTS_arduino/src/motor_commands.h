@@ -5,6 +5,9 @@
 #define R_EN 7
 #define L_EN 8
 
+int speed_current = 0;
+int speed_target = 0;
+
 void setupMotor() {
     pinMode(RPWM, OUTPUT);
     pinMode(LPWM, OUTPUT);
@@ -15,42 +18,33 @@ void setupMotor() {
     digitalWrite(L_EN, HIGH);
 }
 
-void brake_f(){
-    for (int speed=30; speed>=0; speed--){
-        analogWrite(LPWM, speed);
+void setThrottle(int mode){
+    if (mode == 1) speed_target = 30;
+    else if (mode == -1) speed_target = -30;
+    else speed_target = 0;
+}
+
+void updateMotor(){
+    int step = 1;
+
+    if (speed_current < speed_target){  //FORWARD
+        speed_current += step;
+    }
+    else if (speed_current > speed_target){ //REVERSE
+        speed_current -= step;
+    }
+
+    // Apply direction
+    if (speed_current > 0){
+        analogWrite(LPWM, speed_current);
         analogWrite(RPWM, 0);
-        delay(5);
     }
-}
-
-void brake_r(){
-    for (int speed=30; speed>=0; speed--){
+    else if (speed_current < 0){
+        analogWrite(RPWM, -speed_current);
         analogWrite(LPWM, 0);
-        analogWrite(RPWM, speed);
-        delay(5);
     }
-}
-
-void throttle(){
-    brake_r();
-    for (int speed=0; speed<=30; speed++){
-        analogWrite(LPWM, speed);
+    else{
+        analogWrite(LPWM, 0);
         analogWrite(RPWM, 0);
-        delay(10);
     }
-}
-
-
-void reverse(){
-    brake_f();
-    for (int speed=0; speed<=30; speed++){
-        analogWrite(RPWM, speed);
-        analogWrite(LPWM, 0);
-        delay(10);
-    }
-}
-
-void stop(){
-    analogWrite(LPWM, 0);
-    analogWrite(RPWM, 0);
 }

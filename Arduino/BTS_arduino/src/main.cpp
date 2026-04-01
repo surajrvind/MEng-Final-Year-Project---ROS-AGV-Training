@@ -1,49 +1,34 @@
 #include <Arduino.h>
-#include "servo_commands.h"
+#include "steering.h"
 #include "motor_commands.h"
-
-int x;
 
 void setup(){
     setupMotor();
     setupServo();
-    Serial.begin(9600);
-    Serial.setTimeout(1);
-
-    centre();
-    stop();
+    Serial.begin(115200);
+    Serial.setTimeout(10);
+    setSteering(0.0);
+    setThrottle(0);
+    updateMotor();
 }
 
 void loop(){
 
     if (Serial.available() > 0){
-        char key = Serial.read();
+    String msg = Serial.readStringUntil('\n');
 
-        switch (key){
-            case 'w':
-                throttle();
-                Serial.println("Throttle...");
-                break;
-            case 'a':
-                left();
-                Serial.println("Going left...");
-                break;
-            case 's':
-                reverse();
-                Serial.println("Reversing...");
-                break;
-            case 'd':
-                right();
-                Serial.println("Going right...");
-                break;
-            case 'x':
-                brake_f();
-                Serial.println("HOL UP");
-                break;
-            case 'c':
-                centre();
-                Serial.println("Straightening...");
-                break;
-        }
+    int throttle = 0;
+    float steering = 0.0;
+
+    Serial.println("RAW: " + msg);
+
+    if (sscanf(msg.c_str(), "%d,%f", &throttle, &steering) == 2){
+        setThrottle(throttle);
+        setSteering(steering);
+        
+        //debugging
+        Serial.println("RX: Throttle " + String(throttle) + " Steering " + String(steering));
     }
+}
+updateMotor();
 }
