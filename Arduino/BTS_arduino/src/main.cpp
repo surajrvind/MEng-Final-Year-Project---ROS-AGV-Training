@@ -22,13 +22,20 @@ void loop(){
 
     Serial.println("RAW: " + msg);
 
-    if (sscanf(msg.c_str(), "%d,%f", &throttle, &steering) == 2){
+    int commaIndex = msg.indexOf(',');
+
+    if (commaIndex > 0) {
+        String throttleStr = msg.substring(0, commaIndex);
+        String steeringStr = msg.substring(commaIndex + 1);
+
+        throttle = throttleStr.toInt();
+        steering = steeringStr.toFloat();
+
         setThrottle(throttle);
         setSteering(steering);
-        
-        //debugging
+
         Serial.println("RX: Throttle " + String(throttle) + " Steering " + String(steering));
+        }   
     }
-}
 updateMotor();
 }
