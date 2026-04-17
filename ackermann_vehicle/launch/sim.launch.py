@@ -63,9 +63,15 @@ def start_vehicle_control():
 
 
 def generate_launch_description():
+    # Define the robot's and package name
+    package_name = "ackermann_vehicle"
+    package_path = get_package_share_directory(package_name)
+    
+    world_path = os.path.join(package_path, 'worlds', 'obstacles.sdf')
+
     # Define a launch argument for the world file, defaulting to "empty.sdf"
     world_arg = DeclareLaunchArgument(
-        'world', default_value='rl.sdf',
+        'world', default_value= world_path,
         description='Specify the world file for Gazebo (e.g., empty.sdf)')
 
     # Define launch arguments for initial pose
@@ -95,10 +101,6 @@ def generate_launch_description():
     roll = LaunchConfiguration('R')
     pitch = LaunchConfiguration('P')
     yaw = LaunchConfiguration('Y')
-
-    # Define the robot's and package name
-    package_name = "ackermann_vehicle"
-    package_path = get_package_share_directory(package_name)
 
     # Set paths to Xacro model and configuration files
     robot_description_path = os.path.join(package_path, 'model',
